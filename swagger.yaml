@@ -1,0 +1,65 @@
+swagger: "2.0"
+info:
+  title: E-commerce api
+  description: API description in Markdown.
+  version: 1.0.0
+schemes:
+  - http
+  - https
+
+paths:
+  /users:
+    get:
+      summary: Return list of users
+      produces: application/json
+      responses:
+        200:
+          description: OK
+
+  /products/{_id}:
+    get:
+      summary: Get product by a specific ID
+      parameters:
+        - in: path
+          name: _id
+          required: true
+          type: string
+          description: the id of the product
+      produces:
+        - application/json:
+      responses:
+        200:
+          description: ok
+        500:
+          description: Unknown Error
+
+          paths:
+  /products:
+    post:
+      summary: Creates a new user.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: The user to create.
+          schema:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+              price:
+                type: number
+              description:
+                type: string
+              category:
+                type: string
+              image:
+                type: string
+              quantity:
+                type: number
+      responses:
+        201:
+          description: Created
