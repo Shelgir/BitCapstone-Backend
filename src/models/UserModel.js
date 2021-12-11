@@ -7,7 +7,7 @@ const schema = new mongoose.Schema({
   email: String,
   password: String,
   role: String,
-  age: Number
+  age: Number,
 });
 
 // modelek la schemak drust akain bo trigger krdni functiony find u delete u awana
