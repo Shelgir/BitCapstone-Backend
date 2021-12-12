@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Product from "../models/ProductModel.js";
 import prodValid from "../validations/ProductValidate.js";
+import { isAdmin, isAuth } from "../middlewares/auth.middleware.js";
 import winston from "winston";
 const ProductRouter = Router();
 
@@ -9,7 +10,7 @@ ProductRouter.get("/products", (req, res) => {
   winston.info("da bika");
 });
 
-ProductRouter.post("/products", async (req, res) => {
+ProductRouter.post("/products", isAuth, isAdmin, async (req, res) => {
   // try validate akain agar validate bu anja ache addi user bka, agin err message return akaw function awaste
   try {
     await prodValid.validateAsync(req.body);
@@ -28,12 +29,12 @@ ProductRouter.get("/products/:id", async (req, res) => {
   res.json(prod);
 });
 
-ProductRouter.put("/products/:id", async (req, res) => {
+ProductRouter.put("/products/:id", isAuth, isAdmin, async (req, res) => {
   const prod = await Product.findByIdAndUpdate(req.params.id, req.body);
   res.json(prod);
 });
 
-ProductRouter.delete("/products/:id", (req, res) => {
+ProductRouter.delete("/products/:id", isAuth, isAdmin, (req, res) => {
   Product.findOneAndDelete(req.body).then((data) => res.send(data));
 });
 

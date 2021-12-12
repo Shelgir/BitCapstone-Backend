@@ -9,20 +9,27 @@ AuthRouter.post("/login", async (req, res) => {
   let user;
   try {
     user = await Users.findOne({ email: req.body.email });
+    console.log(user);
   } catch (error) {
     return res.json("Unknown Error");
   }
 
   if (user) {
     if (user.password === req.body.password) {
-      var token = jwt.sign(req.body, process.env.JWT_PRIVATE_KEY);
-
-      res.send({ bearer: token });
+      let newUser = {
+        firstname: user.firstname,
+        lastname: user.lastname,
+        email: user.email,
+        role: user.role,
+        age: user.message,
+      };
+      var token = jwt.sign(newUser, process.env.JWT_PRIVATE_KEY);
+      res.json(`bearer ${token}`);
     } else {
-      return res.send("Password Incorrect");
+      return res.send("Username or Password Incorrect");
     }
   } else {
-    return res.send("User Not Found");
+    return res.send("Username or Password Incorrect");
   }
 });
 

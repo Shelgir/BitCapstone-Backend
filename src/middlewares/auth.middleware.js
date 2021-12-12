@@ -3,22 +3,19 @@ import jwt from "jsonwebtoken";
 export function isAuth(req, res, next) {
   const token = req.headers.authorization;
   try {
-    const user = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
+    const user = jwt.verify(token.split(" ")[1], process.env.JWT_PRIVATE_KEY);
     req.user = user;
   } catch (error) {
-    return res.status(401).json("auth failed");
+    return res.status(401).json("Not Authorized");
   }
   next();
 }
 export function isAdmin(req, res, next) {
-  const token = req.headers.authorization;
-  try {
-    const user = jwt.verify(token, process.env.JWT_PRIVATE_KEY);
-    req.user = user;
-  } catch (error) {
-    return res.status(401).json("auth failed");
+  if (req.user.role === "admin") {
+    next();
+  } else {
+    res.status(401).json({ message: "Access Denied!" });
   }
-  next();
 }
 
 export default { isAdmin, isAuth };

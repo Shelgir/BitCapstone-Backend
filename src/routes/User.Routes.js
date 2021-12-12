@@ -1,14 +1,14 @@
 import { Router } from "express";
 import Users from "../models/UserModel.js";
 import userValid from "../validations/UserValidate.js";
-import { isAuth } from "../middlewares/auth.middleware.js";
+import { isAuth, isAdmin } from "../middlewares/auth.middleware.js";
 const UserRouter = Router();
 
-UserRouter.get("/users", isAuth, (req, res) => {
+UserRouter.get("/users", isAuth, isAdmin, (req, res) => {
   Users.find().then((data) => res.send(data));
 });
 
-UserRouter.post("/users", async (req, res) => {
+UserRouter.post("/users", isAuth, isAdmin, async (req, res) => {
   // try validate akain agar validate bu anja ache addi user bka, agin err message return akaw function awaste
   try {
     await userValid.validateAsync(req.body);
@@ -22,17 +22,17 @@ UserRouter.post("/users", async (req, res) => {
   user.save().then((e) => res.send(e));
 });
 
-UserRouter.get("/users/:id", async (req, res) => {
+UserRouter.get("/users/:id", isAuth, isAdmin, async (req, res) => {
   const user = await Users.findById(req.params.id);
   res.json(user);
 });
 
-UserRouter.put("/users/:id", async (req, res) => {
+UserRouter.put("/users/:id", isAuth, isAdmin, async (req, res) => {
   const user = await Users.findByIdAndUpdate(req.params.id, req.body);
   res.json(user);
 });
 
-UserRouter.delete("/users/:id", (req, res) => {
+UserRouter.delete("/users/:id", isAuth, isAdmin, (req, res) => {
   Users.findOneAndDelete(req.body).then((data) => res.send(data));
 });
 

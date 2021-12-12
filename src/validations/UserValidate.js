@@ -22,7 +22,7 @@ const userValid = Joi.object({
     }),
   email: Joi.string().email().required(),
   password: Joi.string().required().min(8).max(16),
-  role: Joi.string().default("user"),
+  role: Joi.string(),
   age: Joi.number().required(),
 });
 
