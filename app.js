@@ -10,6 +10,7 @@ import "winston-mongodb";
 import dotenv from "dotenv";
 import yaml from "yamljs";
 import swaggerUi from "swagger-ui-express";
+import OrdersRouter from "./src/routes/Orders.Routes.js";
 
 async function main() {
   dotenv.config("dotenv");
@@ -29,6 +30,7 @@ async function main() {
   app.use(ProductRouter);
   app.use(CategroyRouter);
   app.use(AuthRouter);
+  app.use(OrdersRouter);
 
   var url = process.env.DB_URL;
   // yak jar connecty db akain u tawaw
